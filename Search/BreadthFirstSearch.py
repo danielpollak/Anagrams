@@ -1,4 +1,5 @@
 import queue
+import csv
 
 
 class BreadthFirstSearch(object):
@@ -52,19 +53,22 @@ class BreadthFirstSearch(object):
         if state == '': return self.word
 
         out = list(self.word)
-        for elem in list(state): #  .queue):
+        for elem in list(state):
             # Why is this thing using a for loop? We need this to take a single state and
             if elem in out:
                 del out[out.index(elem)]
         return out
 
-    @staticmethod
-    def hash_indices(indices):
-        out = ""
-        for elem in indices:
-            out += "_" + chr(elem + 32)  # the first few ascii characters are ugly
-        return out
+    def find_real_words(self):
+        file = open('word_list.txt')
+        f = [line.split('\n') for line in file.readlines()] #f = file.splitlines() # [line.split(',') for line in file.readlines()]
+        f = [item[0] for item in f] # take only the first element in each sublist, as f is initially a list of 2 elem lists
+        print('Actual words:')
+        for i in range(len(self.anagram_list)):
+            if self.anagram_list[i] in f:
+                print(self.anagram_list[i])
 
 if __name__ == "__main__":
     breadth = BreadthFirstSearch()
     breadth.get_anagrams("anagram")
+    breadth.find_real_words()
